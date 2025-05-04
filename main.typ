@@ -47,7 +47,6 @@ fn main() {
 
 #lorem(120)
 
-
 === Die wichtigsten Knöpfe und Hebel
 
 #lorem(50)
