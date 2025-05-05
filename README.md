@@ -13,7 +13,7 @@ or
 
 Alternatively you can use the [Typst web app](https://typst.app/) and import the project directly from the repository and work in the browser.
 
-### Using Mise directly
+### Using Mise
 
 1. Install [Mise](https://mise.jdx.dev/) which manages the project tooling
 2. Run `mise install`
