@@ -1,2 +1,10 @@
 [tools]
 typst = "latest"
+
+[tasks.watch]
+description = 'Watch document continuously'
+run = "typst watch --font-path $MISE_PROJECT_ROOT/fonts/ $MISE_PROJECT_ROOT/main.typ"
+
+[tasks.compile]
+description = 'Compile document'
+run = "typst compile --font-path $MISE_PROJECT_ROOT/fonts/ $MISE_PROJECT_ROOT/main.typ"
