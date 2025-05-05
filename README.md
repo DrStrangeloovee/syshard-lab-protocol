@@ -17,4 +17,4 @@ Alternatively you can use the [Typst web app](https://typst.app/) and import the
 
 1. Install [Mise](https://mise.jdx.dev/) which manages the project tooling
 2. Run `mise install`
-3. You can compile the report via `mise run watch` (this will pass the font's path into it too)
+3. You can watch the report via `mise wr` (this will pass the font's path into it too)
