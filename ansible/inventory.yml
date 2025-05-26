@@ -1,0 +1,6 @@
+myhosts:
+  hosts:
+    syshard:
+      ansible_host: syshard.lan
+  vars:
+    ansible_user: syshard

@@ -89,8 +89,6 @@ This is a good moment to take a snapshot as this marks the point of Ansible taki
   + Which known CVEs or misconfigurations exist in the base installation?
   + Are there high-severity issues that require immediate action?
 
-
-
 = Analysis Part
 
 #lorem(80)

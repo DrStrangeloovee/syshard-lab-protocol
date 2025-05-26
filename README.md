@@ -18,3 +18,7 @@ Alternatively you can use the [Typst web app](https://typst.app/) and import the
 1. Install [Mise](https://mise.jdx.dev/) which manages the project tooling
 2. Run `mise install`
 3. You can watch the report via `mise wr` (this will pass the font's path into it too)
+
+### Ansible host
+
+In order for Ansible to be able to connect to the right host it is a good idea to have the domain `syshard.lan` resolve to that host (as defined in the [inventory](./ansible/inventory.yml).
