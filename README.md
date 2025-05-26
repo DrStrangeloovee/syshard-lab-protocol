@@ -21,4 +21,4 @@ Alternatively you can use the [Typst web app](https://typst.app/) and import the
 
 ### Ansible host
 
-In order for Ansible to be able to connect to the right host it is a good idea to have the domain `syshard.lan` resolve to that host (as defined in the [inventory](./ansible/inventory.yml).
+In order for Ansible to be able to connect to the right host it is a good idea to have the domain `syshard.lan` resolve to that host (as defined in the [inventory](./ansible/inventory.yml)).
