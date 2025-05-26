@@ -24,19 +24,13 @@
 // Userpassword: MyUserPassword1!
 // Encryptpassword: MyEncryptPassword1!
 
-
-= Introduction
+= Procedure and Set-Up
 
 In this lab protocol, we present a systematic approach to hardening a home server that provides Cloud, Media Streaming and File Backup services for family and friends. The protocol focuses exclusively on securing the operating system and the deployed services. We don't deal with the access of the server via the internet; but a viable option would be running a WireGuard server only giving access to the allowed users.
 #linebreak()
 All configurations are automated and fully reproducible on a fresh installation using Ansible. The chosen operating system is Debian _12.11.0 (bookworm)_ - additionally the network install (_netinst_#footnote("https://www.debian.org/CD/netinst/")) version of the image was chosen. This decision was made because of the long support provided by the Debian maintainers with backports of security patches and the philosophy of having only stable and well tested software on the system this makes Debian a good choice for our scenario furthermore the choosing the _netinst_ image allows us to start with a minimal set of packages which reduces the complexity by not installing packages which we won't end up using while simultaneously reducing the attack surface.
 #linebreak()
 A Proxmox VE installation is used as a host for the system and a snapshot of the freshly installed system was used to simplify testing and development of the Ansible playbook.
-
-#pagebreak()
-
-= Procedure and Set-Up
-
 
 == System Description
 
@@ -47,7 +41,6 @@ The system will be created by using the virtual machine feature of Proxmox, and 
     Assigned system resources of virtual machine.
   ],
 )
-
 
 === Debian installation
 
@@ -77,7 +70,26 @@ To simplify the process we are choosing the "Create LVM and encrypt" option whic
     Partition scheme.
   ],
 ) <partition-scheme>
-#pagebreak()
+
+We don't install any additional software besides the default system tools and the SSH server and finally finish the installation by setting the location of the GRUB bootloader and rebooting into the newly installed system.
+#parbreak()
+This is a good moment to take a snapshot as this marks the point of Ansible taking over and automating the rest of the system installation.
+
+== Analysis objectives & Questions
+// TODO: extend description to what software will be installed/used for what purpose, how these will be configured, at the end of the chapter questions or goal of the analysis (what we intend to find out)/what we explore
+// The list below should be extende a little more
+- *Partitioning, file system & disk encryption*
+  + Are all disks, partition and mount points created exactly as defined?
+  + Is the drive encrypted?
+- *Minimal base system*
+  + Which network ports/services are listening immediately after the installation?
+- *Baseline network assessment*
+  + Do default firewall rules block unwanted packets?
+- *Baseline vulnerability scans*
+  + Which known CVEs or misconfigurations exist in the base installation?
+  + Are there high-severity issues that require immediate action?
+
+
 
 = Analysis Part
 
