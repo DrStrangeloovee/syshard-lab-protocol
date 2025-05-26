@@ -1,4 +1,6 @@
 [tools]
+ansible = "latest"
+pipx = "latest"
 typst = "latest"
 
 [tasks.watch-report]
