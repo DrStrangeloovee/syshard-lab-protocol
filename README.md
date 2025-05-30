@@ -4,7 +4,10 @@
 
 First make sure the `.vault_pass` exists under the `ansible` folder and contains the decrypt the vault.
 To run the playbook:
-`ansible-playbook playbook.yml --vault-password-file .vault_pass -i inventory/hosts.ini`
+```
+ansible-galaxy install -r requirements.yml # Install needed requirements
+ansible-playbook playbook.yml --vault-password-file .vault_pass -i inventory/hosts.ini # Run playbook
+```
 
 To compile the document:
 
