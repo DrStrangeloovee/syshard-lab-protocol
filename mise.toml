@@ -2,13 +2,21 @@
 ansible = "latest"
 pipx = "latest"
 typst = "latest"
+python = "3.11"
+
+[env]
+# Use the project name derived from the current directory
+PROJECT_NAME = "{{ config_root | basename }}"
+
+# Automatic virtualenv activation
+_.python.venv = { path = ".venv", create = true }
 
 [tasks.watch-report]
-alias= "wr"
+alias = "wr"
 description = "Watch report continuously"
 run = "typst watch --font-path $MISE_PROJECT_ROOT/fonts/ $MISE_PROJECT_ROOT/main.typ"
 
 [tasks.compile-report]
-alias= "cr"
+alias = "cr"
 description = "Compile report"
 run = "typst compile --font-path $MISE_PROJECT_ROOT/fonts/ $MISE_PROJECT_ROOT/main.typ"
