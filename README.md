@@ -21,4 +21,16 @@ Alternatively you can use the [Typst web app](https://typst.app/) and import the
 
 ### Ansible host
 
+#### Create SSH key pair
+
+To have Ansible be able connecting to the target we create a key pair and transfer it:
+```shell
+ssh-keygen -t ed25519
+ssh-copy-id -i <path-to-key>/<key-name> <user>@<host>
+```
+
+Otherwise the 
+
+
+
 In order for Ansible to be able to connect to the right host it is a good idea to have the domain `syshard.lan` resolve to that host (as defined in the [inventory](./ansible/inventory.yml)).
