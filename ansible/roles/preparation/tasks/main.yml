@@ -1,0 +1,38 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for preparation
+- block:
+    - name: Update all packages to their latest version
+      ansible.builtin.apt:
+        name: "*"
+        state: latest
+
+    - name: Upgrade the OS (apt-get dist-upgrade)
+      ansible.builtin.apt:
+        upgrade: dist
+
+    - name: Run the equivalent of 'apt-get update' as a separate step
+      ansible.builtin.apt:
+        update_cache: true
+
+    - name: Install sudo
+      ansible.builtin.apt:
+        name: "sudo"
+        state: present
+
+    - name: Add the user 'syshard' and assign 'sudo' group
+      ansible.builtin.user:
+        name: syshard
+        group: sudo
+
+    - name: Add 'syshard' user to sudoers
+      community.general.sudoers:
+        name: syshard
+        state: present
+        user: syshard
+        nopassword: true
+        commands: ALL
+
+  become: true
+  become_method: ansible.builtin.su
+  become_user: root

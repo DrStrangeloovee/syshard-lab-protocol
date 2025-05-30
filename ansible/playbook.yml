@@ -1,0 +1,31 @@
+#- name: Installiere Basiskonfiguration
+#  hosts: syshard
+#  become_method: su
+#  become: yes
+#  become_user: root
+
+- name: "SYSHARD - Debian 12.11 (netinst)"
+  hosts: all
+  vars_files:
+    - group_vars/all/vault.yml
+  roles:
+    - preparation
+    - baseline_hardening
+    - security_updates_management
+
+
+        
+  #vars_files:
+  #  - vault/vault.yml
+#  roles:
+#      # 1. Base OS & SSH lockdown
+#      - role: security_updates_management
+  # - role: devsec.hardening.os_hardening
+  # - role: devsec.hardening.ssh_hardening
+  #  - security_updates_management
+  #  - minimal_attack_surface
+  #  - access_control
+  #  - network_protections
+  #  - mandatory_access_control
+  #  - auditing
+  #  - vulnerability_assessmentansible-galaxy install -r requirements.yml

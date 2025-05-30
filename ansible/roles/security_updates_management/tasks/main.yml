@@ -1,3 +1,14 @@
 #SPDX-License-Identifier: MIT-0
 ---
 # tasks file for security_updates_management
+- block:
+    - name: Install, configure & enable unattended-upgrades
+      ansible.builtin.import_role:
+        name: hifis.toolkit.unattended_upgrades
+
+    - name: Install listchanges for package notifications
+      ansible.builtin.apt:
+        name: "apt-listchanges"
+        state: present # TODO: configure this: https://wiki.debian.org/UnattendedUpgrades#apt-listchanges
+
+  become: true

@@ -3,4 +3,4 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - roles/security_updates_management
+    - roles/preparation
