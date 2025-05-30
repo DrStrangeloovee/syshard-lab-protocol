@@ -2,6 +2,8 @@
 
 ## Usage
 
+### Ansible
+
 First make sure the `.vault_pass` exists under the `ansible` folder and contains the decrypt the vault.
 To run the playbook:
 ```shell
