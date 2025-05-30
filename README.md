@@ -2,7 +2,11 @@
 
 ## Usage
 
-There are two ways to compile the document:
+First make sure the `.vault_pass` exists under the `ansible` folder and contains the decrypt the vault.
+To run the playbook:
+`ansible-playbook playbook.yml --vault-password-file .vault_pass -i inventory/hosts.ini`
+
+To compile the document:
 
 ### Using Typst directly
 
@@ -28,9 +32,6 @@ To have Ansible be able connecting to the target we create a key pair and transf
 ssh-keygen -t ed25519
 ssh-copy-id -i <path-to-key>/<key-name> <user>@<host>
 ```
-
-Otherwise the 
-
 
 
 In order for Ansible to be able to connect to the right host it is a good idea to have the domain `syshard.lan` resolve to that host (as defined in the [inventory](./ansible/inventory.yml)).
