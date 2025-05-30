@@ -20,6 +20,9 @@
   *#it.supplement~#it.counter.display()#it.separator*#it.body
 ]
 
+// Style code blocks with a grey background
+#show raw.where(block: true): set block(fill: luma(240), inset: 1em, radius: 0.5em, width: 100%)
+
 // Rootpassword: MyRootPassword1!
 // Userpassword: MyUserPassword1!
 // Encryptpassword: MyEncryptPassword1!
@@ -73,11 +76,22 @@ To simplify the process we are choosing the _Create LVM and encrypt_ option whic
 
 We don't install any additional software besides the default system tools and the SSH server and finally finish the installation by setting the location of the GRUB bootloader and rebooting into the newly installed system.
 #parbreak()
+The only account present by default is the superuser _root_. In addition, we've created a non-privileged user named _syshard_ for day-to-day operations and this account does not belong to the sudoers group and therefore cannot perform any administrative tasks without first elevating to root.
+To enable _Ansible_ to connect via SSH to the target system we are creating a key pair and transfer the public key to it. While this process could be automated with Ansible too it would require another dependency (_sshpass_#footnote("https://anto.online/ssh-connection-type-with-passwords-you-must-install-the-sshpass-program/")) on the remote system to be able to pass the needed SSH password to login and, it was therefore decided to just manually copy the key once and afterward be able to have _Ansible_ connect via SSH keys.
+#parbreak()
 This is a good moment to take a snapshot as this marks the point of Ansible taking over and automating the rest of the system installation.
 
 == Analysis objectives & Questions
 // TODO: extend description to what software will be installed/used for what purpose, how these will be configured, at the end of the chapter questions or goal of the analysis (what we intend to find out)/what we explore
 // The list below should be extended a little more
+//
+
++ *Security updates management*
+  - *Objective:* Ensure the system remains up-to-date with the latest security patches.
+  - *Question:* Can we fully automate security updates and verify that critical patches are applied?
++ *Linux Baseline hardening* (according to the _DevSec Hardening Framework_#footnote("https://dev-sec.io/"))
+  - *Objective:* Apply well known security recommendations for a Debian 12 host. This includes reducing the attack surface & applying secure configurations.
+  - *Question:* Which results will a security audit still find which would require immediate attention?
 
 + *Security updates management*
   - *Objective:* Ensure the system remains up-to-date with the latest security patches.
@@ -106,7 +120,43 @@ This is a good moment to take a snapshot as this marks the point of Ansible taki
   + Debian
   + SSH access
 
+== Preparation
+
+Before we start with the actual system hardening we have to prepare the target because the _netinst_ variant doesn't even provide the _sudo_ program which means everything would have to be executed as the _root_ user which wouldn't be optimal. Installing _sudo_ also brings the advantage of logging every call of it. So the following will be automated in a separate initial _Ansible_ role:
++ Installation of _sudo_
++ Adding the _syshard_ user to the _sudoers_ file
+Subsequent _Ansible_ roles will then be using _sudo_ to elevate privileges when needed.
+
+To finalize the preparation the system will update the package sources and fetch the latest patches via _apt_#footnote("https://packages.debian.org/bookworm/apt").
+
 == Security updates management
+
+The target host should be updated regularly with the latest security patches. It is a good idea to automate this process to minimize the exposure window following the _Securing Debian Manual_#footnote("https://www.debian.org/doc/manuals/securing-debian-manual/security-update.en.html") suggestion - this is achieved by using _unattended-upgrades_ package and configure it to only apply security related updates. To achieve this the role `hifis.toolkit.unattended_upgrades`#footnote("https://galaxy.ansible.com/ui/repo/published/hifis/toolkit/content/role/unattended_upgrades/") will be used. Which already brings the wanted configuration by only allowing security related patches. The following is a small excerpt of the configuration:
+- _unattended_syslog_enable_ = _true_ | Write events to _syslog_ to be in a central location.
+- _unattended_apt_daily_upgrade_oncalendar_ = _\*-\*-\* 6:00_ | Time schedule to run update process.
+- _unattended_automatic_reboot_ = _false_ | If automatic upgrades need a reboot of the host this isn't done automatically.
+
+#figure(
+  image("assets/unattended-upgrades-config.png"),
+  caption: [
+    Unattended upgrades configuration only allowing security patches.
+  ],
+)
+#parbreak()
+To assist the update process we are additionally installing the _apt-listchanges_#footnote("https://packages.debian.org/bookworm/apt-listchanges") package which notifies about package updates by email. This ensures that the system administrator is also kept updated on the update process and if manual intervention is needed.
+
+== Linux Baseline hardening
+
+There are many resources covering system hardening of a host and, it is quite a complex topic. We are going to apply some general guidelines provided by the _DevSec Hardening Framework_#footnote("https://dev-sec.io/") which applies various securing recommendations.
+
+#figure(
+  image("assets/devsec-overview.png"),
+  caption: [
+    Overview of the _DevSec Hardening Framework Baselines_
+  ],
+) <devsec-overview>
+
+As the @devsec-overview displays what is covered by the framework we see that it mostly tries to give a
 
 = Analysis Part
 
