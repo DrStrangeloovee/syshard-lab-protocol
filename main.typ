@@ -26,7 +26,7 @@
 
 = Procedure and Set-Up
 
-In this lab protocol, we present a systematic approach to hardening a home server that provides Cloud, Media Streaming and File Backup services for family and friends. The protocol focuses exclusively on securing the operating system and the deployed services. We don't deal with the access of the server via the internet; but a viable option would be running a WireGuard server only giving access to the allowed users.
+In this lab protocol, we present a systematic approach to hardening a home server that provides Cloud, Media Streaming and File Backup services for family and friends. The protocol focuses exclusively on securing the operating system and the deployed services. We don't deal with the access of the server via the internet; but a viable option would be running a VPN server and only giving access to the allowed users.
 #linebreak()
 All configurations are automated and fully reproducible on a fresh installation using Ansible. The chosen operating system is Debian _12.11.0 (bookworm)_ - additionally the network install (_netinst_#footnote("https://www.debian.org/CD/netinst/")) version of the image was chosen. This decision was made because of the long support provided by the Debian maintainers with backports of security patches and the philosophy of having only stable and well tested software on the system this makes Debian a good choice for our scenario furthermore the choosing the _netinst_ image allows us to start with a minimal set of packages which reduces the complexity by not installing packages which we won't end up using while simultaneously reducing the attack surface.
 #linebreak()
@@ -63,7 +63,7 @@ After setting the language, locale, hostname, username and reasonably strong pas
 - `/home` and `/tmp` because a user has write permission on these and therefore could render the system unstable#footnote("https://www.hackinglinuxexposed.com/articles/20031111.html").
 - `/var` to keep in size fluctuating directories separate.
 
-To simplify the process we are choosing the "Create LVM and encrypt" option which will apply the above-mentioned scheme additionally to encrypting it. After setting the password to decrypt the drive we are presented with the partition scheme shown in @partition-scheme and continue with the installation process.
+To simplify the process we are choosing the _Create LVM and encrypt_ option which will apply the above-mentioned scheme additionally to encrypting it. After setting the password to decrypt the drive we are presented with the partition scheme shown in @partition-scheme and continue with the installation process.
 #figure(
   image("assets/partition-scheme.png"),
   caption: [
@@ -77,17 +77,36 @@ This is a good moment to take a snapshot as this marks the point of Ansible taki
 
 == Analysis objectives & Questions
 // TODO: extend description to what software will be installed/used for what purpose, how these will be configured, at the end of the chapter questions or goal of the analysis (what we intend to find out)/what we explore
-// The list below should be extende a little more
-- *Partitioning, file system & disk encryption*
-  + Are all disks, partition and mount points created exactly as defined?
-  + Is the drive encrypted?
-- *Minimal base system*
-  + Which network ports/services are listening immediately after the installation?
-- *Baseline network assessment*
-  + Do default firewall rules block unwanted packets?
-- *Baseline vulnerability scans*
-  + Which known CVEs or misconfigurations exist in the base installation?
-  + Are there high-severity issues that require immediate action?
+// The list below should be extended a little more
+
++ *Security updates management*
+  - *Objective:* Ensure the system remains up-to-date with the latest security patches.
+  - *Question:* Can we fully automate security updates and verify that critical patches are applied?
++ *Minimal attack surface*
+  - *Objective:* Remove unneeded software and services.
+  - *Questions:* Which default packages and daemons are unnecessary, and how do we remove them?
++ *Access control*
+  - *Objective:* Enforce strong authentication and least-privilege access.
+  - *Questions:* How do we lock down SSH, user accounts, and sudo to prevent unauthorized entry?
++ *Network protections*
+  - *Objective:* Restrict network traffic to only what's required.
+  - *Questions:* Can we define a default-deny firewall policy via _nftables_ and verify it blocks unwanted connections?
++ *Mandatory access control*
+  - *Objective:* Use _AppArmor_ to contain services.
+  - *Questions:* Are _AppArmor_ profiles enabled by default, and can we load custom enforce-mode rules?
++ *Auditing*
+  - *Objective:* Implement robust logging, file-integrity checks, and intrusion detection.
+  - *Questions:* Can we automate _auditd_, _AIDE_, and rootkit scans, and schedule/report their findings?
++ *Vulnerability Assessment*
+  - *Objective:* Run periodic CVE scans.
+  - *Questions:* Does running _OpenVAS_ or a lightweight CVE scanner identify critical flaws out of the box?
+
+// TODO: do we need the following?
+- *System hardening according to the _Inspec DevSec Baselines_ *
+  + Debian
+  + SSH access
+
+== Security updates management
 
 = Analysis Part
 

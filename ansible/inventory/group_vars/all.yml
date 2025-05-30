@@ -1,0 +1,9 @@
+essential_packages:
+  - openssh-server
+  - sudo
+  - auditd
+  - apparmor
+  - nftables
+services_to_disable:
+  - rpcbind
+  - postfix
