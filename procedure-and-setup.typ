@@ -143,6 +143,6 @@ As @devsec-overview displays: logging and monitoring isn't covered by the framew
 == SSH hardening
 
 SSH is the preferred way of remotely administering Linux servers. The default configuration grants anyone with valid credentials direct access to the systems command line and makes this a primary target for attacks. In this chapter we are applying several guidelines to secure this important gateway. We are using another _Ansible_ role provided by the _DevSec Hardening Framework_ - the following represents a small subset of rules applied:
-- Only allowing Protocol 2 connections for security enhancements#footnote("https://jadaptive.com/java-ssh-library/exploring-ssh-protocol-versions-differences-and-enhancements/").
+- Only allowing Protocol 2 connections for security enhancements#footnote("https://www.emtec.com/ssh/ssh-v2.html").
 - Disable all SSH authentication methods except key-based authentication.
 - Limit the number of concurrent sessions to minimize the impact of a _Denial of Service_ (DoS) attack against a running SSH daemon.
