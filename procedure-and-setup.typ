@@ -92,11 +92,6 @@ This is a good moment to take a snapshot as this marks the point of Ansible taki
   - *Objective:* Run periodic CVE scans.
   - *Questions:* Does running _OpenVAS_ or a lightweight CVE scanner identify critical flaws out of the box?
 
-// TODO: do we need the following?
-- *System hardening according to the _Inspec DevSec Baselines_ *
-  + Debian
-  + SSH access
-
 == Pre-Analysis
 
 Before implementing any hardening measures, it is essential to evaluate the system's current security posture through a comprehensive baseline assessment, ensuring that all subsequent hardening efforts can be measured and that improvements remain both quantifiable and targeted.
@@ -176,4 +171,4 @@ The target host should be updated regularly with the latest security patches. It
   ],
 )
 #parbreak()
-To assist the update process we are additionally installing the _apt-listchanges_#footnote("https://packages.debian.org/bookworm/apt-listchanges") package which notifies about package updates by email. This ensures that the system administrator is also kept updated on the update process and if manual intervention is needed.
+To assist the update process we are additionally installing the _apt-listchanges_#footnote("https://packages.debian.org/bookworm/apt-listchanges") package which notifies about package updates by email. This ensures that the system administrator is always notified on the update process and if manual intervention is needed.
