@@ -101,7 +101,16 @@ This is a good moment to take a snapshot as this marks the point of Ansible taki
 
 Before implementing any hardening measures, it is essential to evaluate the system's current security posture through a comprehensive baseline assessment, ensuring that all subsequent hardening efforts can be measured and that improvements remain both quantifiable and targeted.
 
+Given the minimal installation of our target host, we did not expect to find much. However, Lynis still performs a thorough audit and identifies numerous areas for improvement, while RustScan scans all ports (0–65535) and, as expected, finds only SSH open.
+
+#figure(
+  image("assets/rustscan-pre-analysis.png"),
+  caption: [
+    Open network ports on base installation.
+  ],
+)
 // TODO: reference pre-analysis files here
+
 
 == Objectives
 
