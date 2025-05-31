@@ -56,25 +56,19 @@ This is a good moment to take a snapshot as this marks the point of Ansible taki
 // TODO: extend description to what software will be installed/used for what purpose, how these will be configured, at the end of the chapter questions or goal of the analysis (what we intend to find out)/what we explore
 
 
-+ *Security updates management*
-  - *Objective:* Ensure the system remains up-to-date with the latest security patches.
-  - *Question:* Can we fully automate security updates and verify that critical patches are applied?
 + *Baseline hardening* (according to the _DevSec Hardening Framework Linux baseline_#footnote("https://dev-sec.io/baselines/linux/"))
   - *Objective:* Apply well known security recommendations for a Debian 12 host. This includes reducing the attack surface & applying secure configurations.
   - *Question:* Which results will a security audit still find which would require immediate attention?
-+ *Security updates management*
-  - *Objective:* Ensure the system remains up-to-date with the latest security patches.
-  - *Question:* Can we fully automate security updates and verify that critical patches are applied?
 + *SSH hardening* (according to the _DevSec Hardening Framework SSH baseline_#footnote("https://dev-sec.io/baselines/ssh/"))
   - *Objective:* Harden the SSH service to enforce secure authentication (public key) and disable unsecure options.
   - *Question:* Is the SSH daemon configured to allow only Protocol 2, disable root logins and password authentication, enforce strong key‐exchange algorithms and ciphers?
++ *Security updates management*
+  - *Objective:* Ensure the system remains up-to-date with the latest security patches.
+  - *Question:* Can we fully automate security updates and verify that critical patches are applied?
 // TODO: refine objectives
 + *Minimal attack surface*
   - *Objective:* Remove unneeded software and services.
   - *Questions:* Which default packages and daemons are unnecessary, and how do we remove them?
-+ *Access control*
-  - *Objective:* Enforce strong authentication and least-privilege access.
-  - *Questions:* How do we lock down SSH, user accounts, and sudo to prevent unauthorized entry?
 + *Network protections*
   - *Objective:* Restrict network traffic to only what's required.
   - *Questions:* Can we define a default-deny firewall policy via _nftables_ and verify it blocks unwanted connections?
@@ -101,22 +95,6 @@ Before we start with the actual system hardening we have to prepare the target b
 Subsequent _Ansible_ roles will then be using _sudo_ to elevate privileges when needed.
 
 To finalize the preparation the system will update the package sources and fetch the latest patches via _apt_#footnote("https://packages.debian.org/bookworm/apt").
-
-== Security updates management
-
-The target host should be updated regularly with the latest security patches. It is a good idea to automate this process to minimize the exposure window following the _Securing Debian Manual_#footnote("https://www.debian.org/doc/manuals/securing-debian-manual/security-update.en.html") suggestion - this is achieved by using _unattended-upgrades_ package and configure it to only apply security related updates. To achieve this the role `hifis.toolkit.unattended_upgrades`#footnote("https://galaxy.ansible.com/ui/repo/published/hifis/toolkit/content/role/unattended_upgrades/") will be used. Which already brings the wanted configuration by only allowing security related patches. The following is a small excerpt of the configuration:
-- _unattended_syslog_enable_ = _true_ | Write events to _syslog_ to be in a central location.
-- _unattended_apt_daily_upgrade_oncalendar_ = _\*-\*-\* 6:00_ | Time schedule to run update process.
-- _unattended_automatic_reboot_ = _false_ | If automatic upgrades need a reboot of the host this isn't done automatically.
-
-#figure(
-  image("assets/unattended-upgrades-config.png"),
-  caption: [
-    Unattended upgrades configuration only allowing security patches.
-  ],
-)
-#parbreak()
-To assist the update process we are additionally installing the _apt-listchanges_#footnote("https://packages.debian.org/bookworm/apt-listchanges") package which notifies about package updates by email. This ensures that the system administrator is also kept updated on the update process and if manual intervention is needed.
 
 == Baseline hardening
 
@@ -146,3 +124,19 @@ SSH is the preferred way of remotely administering Linux servers. The default co
 - Only allowing Protocol 2 connections for security enhancements#footnote("https://www.emtec.com/ssh/ssh-v2.html").
 - Disable all SSH authentication methods except key-based authentication.
 - Limit the number of concurrent sessions to minimize the impact of a _Denial of Service_ (DoS) attack against a running SSH daemon.
+
+== Security updates management
+
+The target host should be updated regularly with the latest security patches. It is a good idea to automate this process to minimize the exposure window following the _Securing Debian Manual_#footnote("https://www.debian.org/doc/manuals/securing-debian-manual/security-update.en.html") suggestion - this is achieved by using _unattended-upgrades_ package and configure it to only apply security related updates. To achieve this the role `hifis.toolkit.unattended_upgrades`#footnote("https://galaxy.ansible.com/ui/repo/published/hifis/toolkit/content/role/unattended_upgrades/") will be used. Which already brings the wanted configuration by only allowing security related patches. The following is a small excerpt of the configuration:
+- _unattended_syslog_enable_ = _true_ | Write events to _syslog_ to be in a central location.
+- _unattended_apt_daily_upgrade_oncalendar_ = _\*-\*-\* 6:00_ | Time schedule to run update process.
+- _unattended_automatic_reboot_ = _false_ | If automatic upgrades need a reboot of the host this isn't done automatically.
+
+#figure(
+  image("assets/unattended-upgrades-config.png"),
+  caption: [
+    Unattended upgrades configuration only allowing security patches.
+  ],
+)
+#parbreak()
+To assist the update process we are additionally installing the _apt-listchanges_#footnote("https://packages.debian.org/bookworm/apt-listchanges") package which notifies about package updates by email. This ensures that the system administrator is also kept updated on the update process and if manual intervention is needed.
