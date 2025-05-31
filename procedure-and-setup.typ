@@ -6,7 +6,7 @@ All configurations are automated and fully reproducible on a fresh installation 
 #parbreak()
 For the analysis phase a separate _Kali Linux_#footnote("https://www.kali.org/") machine is used which gives us a wide variety of tools to leverage for a more thorough security assessment.
 Tools used for the assessment are:
-- _Lynis_#footnote("https://cisofy.com/lynis/") to check the system's security and clearly highlight areas for improvement.
+- _Lynis_#footnote("https://cisofy.com/lynis/") to assess the system's security and clearly identify areas for improvement; it will run with elevated privileges to perform a more comprehensive set of tests.
 - _RustScan_#footnote("https://github.com/bee-san/RustScan") a modern alternative to _Nmap_#footnote("https://nmap.org/") for port scanning the target.
 // TODO: Maybe include more tools? OpenSCAP? Nessus?
 #parbreak()
@@ -109,8 +109,17 @@ Given the minimal installation of our target host, we did not expect to find muc
     Open network ports on base installation.
   ],
 )
-// TODO: reference pre-analysis files here
 
+Conveniently _Lynis_ displays us a _Hardening index_ which gives us an impression on how well the system is hardened. This index is based off the tests _Lynis_ therefore it shouldn't be interpreted as a percentage value.
+
+#figure(
+  image("assets/lynis-pre-analysis.png"),
+  caption: [
+    Lynis audit results.
+  ],
+)
+
+// TODO: reference pre-analysis files here
 
 == Objectives
 
@@ -143,7 +152,7 @@ As @devsec-overview displays: logging and monitoring isn't covered by the framew
 
 // TODO: extend the contents of this chapter
 
-// TODO: reference audit results in next chapter: https://typst.app/docs/reference/model/ref/
+// TODO: reference audit results in next analysis chapter: https://typst.app/docs/reference/model/ref/
 
 === SSH hardening
 
@@ -155,6 +164,7 @@ SSH is the preferred way of remotely administering Linux servers. The default co
 === Security updates management
 
 The target host should be updated regularly with the latest security patches. It is a good idea to automate this process to minimize the exposure window following the _Securing Debian Manual_#footnote("https://www.debian.org/doc/manuals/securing-debian-manual/security-update.en.html") suggestion - this is achieved by using _unattended-upgrades_ package and configure it to only apply security related updates. To achieve this the role `hifis.toolkit.unattended_upgrades`#footnote("https://galaxy.ansible.com/ui/repo/published/hifis/toolkit/content/role/unattended_upgrades/") will be used. Which already brings the wanted configuration by only allowing security related patches. The following is a small excerpt of the configuration:
+// TODO: improve formatting
 - _unattended_syslog_enable_ = _true_ | Write events to _syslog_ to be in a central location.
 - _unattended_apt_daily_upgrade_oncalendar_ = _\*-\*-\* 6:00_ | Time schedule to run update process.
 - _unattended_automatic_reboot_ = _false_ | If automatic upgrades need a reboot of the host this isn't done automatically.
@@ -162,7 +172,7 @@ The target host should be updated regularly with the latest security patches. It
 #figure(
   image("assets/unattended-upgrades-config.png"),
   caption: [
-    Unattended upgrades configuration only allowing security patches.
+    Unattended upgrades configured to only allow security patches.
   ],
 )
 #parbreak()
