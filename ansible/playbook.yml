@@ -11,6 +11,7 @@
   roles:
     - preparation
     - baseline_hardening
+    - ssh_hardening
     - security_updates_management
 
 
