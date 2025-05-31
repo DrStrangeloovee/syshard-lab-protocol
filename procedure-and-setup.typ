@@ -1,14 +1,22 @@
 = Procedure and Set-Up
 
 In this lab protocol, we present a systematic approach to hardening a home server that provides Cloud, Media Streaming and File Backup services for family and friends. The protocol focuses exclusively on securing the operating system and the deployed services. We don't deal with the access of the server via the internet; but a viable option would be running a VPN server and only giving access to the allowed users.
-#linebreak()
-All configurations are automated and fully reproducible on a fresh installation using Ansible. The chosen operating system is Debian _12.11.0 (bookworm)_ - additionally the network install (_netinst_#footnote("https://www.debian.org/CD/netinst/")) version of the image was chosen. This decision was made because of the long support provided by the Debian maintainers with backports of security patches and the philosophy of having only stable and well tested software on the system this makes Debian a good choice for our scenario furthermore the choosing the _netinst_ image allows us to start with a minimal set of packages which reduces the complexity by not installing packages which we won't end up using while simultaneously reducing the attack surface.
-#linebreak()
+#parbreak()
+All configurations are automated and fully reproducible on a fresh installation using Ansible. The chosen operating system is Debian _12.11.0 (bookworm)_#footnote("https://www.debian.org/") - additionally the network install (_netinst_#footnote("https://www.debian.org/CD/netinst/")) version of the image was chosen. This decision was made because of the long support provided by the Debian maintainers with backports of security patches and the philosophy of having only stable and well tested software on the system this makes Debian a good choice for our scenario furthermore the choosing the _netinst_ image allows us to start with a minimal set of packages which reduces the complexity by not installing packages which we won't end up using while simultaneously reducing the attack surface.
+#parbreak()
+For the analysis phase a separate _Kali Linux_#footnote("https://www.kali.org/") machine is used which gives us a wide variety of tools to leverage for a more thorough security assessment.
+Tools used for the assessment are:
+- _Lynis_#footnote("https://cisofy.com/lynis/") to check the system's security and clearly highlight areas for improvement.
+- _RustScan_#footnote("https://github.com/bee-san/RustScan") a modern alternative to _Nmap_#footnote("https://nmap.org/") for port scanning the target.
+// TODO: Maybe include more tools? OpenSCAP? Nessus?
+#parbreak()
 A Proxmox VE installation is used as a host for the system and a snapshot of the freshly installed system was used to simplify testing and development of the Ansible playbook.
+
+#pagebreak()
 
 == System Description
 
-The system will be created by using the virtual machine feature of Proxmox, and we assigned the following resources to the system:
+The target system will be created by using the virtual machine feature of Proxmox, and we assigned the following resources to the system:
 #figure(
   image("assets/debian-vm-resources.png"),
   caption: [
@@ -18,7 +26,7 @@ The system will be created by using the virtual machine feature of Proxmox, and 
 
 === Debian installation
 
-After starting the virtual machine we are going to start the installation process but beforehand need to verify the authenticity of the downloaded installation media as described on the official Debian site.#footnote("https://www.debian.org/CD/verify").
+After starting the virtual machine we are going to start the installation process but beforehand need to verify the authenticity of the downloaded installation media as described on the official Debian site#footnote("https://www.debian.org/CD/verify").
 #figure(
   image("assets/debian-check-sha256.png"),
   caption: [
@@ -51,6 +59,8 @@ The only account present by default is the superuser _root_. In addition, we've 
 To enable _Ansible_ to connect via SSH to the target system we are creating a key pair and transfer the public key to it. While this process could be automated with Ansible too it would require another dependency (_sshpass_#footnote("https://anto.online/ssh-connection-type-with-passwords-you-must-install-the-sshpass-program/")) on the remote system to be able to pass the needed SSH password to login and, it was therefore decided to just manually copy the key once and afterward be able to have _Ansible_ connect via SSH keys.
 #parbreak()
 This is a good moment to take a snapshot as this marks the point of Ansible taking over and automating the rest of the system installation.
+
+#pagebreak()
 
 == Analysis objectives & Questions
 // TODO: extend description to what software will be installed/used for what purpose, how these will be configured, at the end of the chapter questions or goal of the analysis (what we intend to find out)/what we explore
@@ -87,7 +97,15 @@ This is a good moment to take a snapshot as this marks the point of Ansible taki
   + Debian
   + SSH access
 
-== Preparation <preparation>
+== Pre-Analysis
+
+Before implementing any hardening measures, it is essential to evaluate the system's current security posture through a comprehensive baseline assessment, ensuring that all subsequent hardening efforts can be measured and that improvements remain both quantifiable and targeted.
+
+// TODO: reference pre-analysis files here
+
+== Objectives
+
+=== Preparation <preparation>
 
 Before we start with the actual system hardening we have to prepare the target because the _netinst_ variant doesn't even provide the _sudo_ program which means everything would have to be executed as the _root_ user which wouldn't be optimal. Installing _sudo_ also brings the advantage of logging every call of it. So the following will be automated in a separate initial _Ansible_ role:
 + Installation of _sudo_
@@ -96,7 +114,7 @@ Subsequent _Ansible_ roles will then be using _sudo_ to elevate privileges when 
 
 To finalize the preparation the system will update the package sources and fetch the latest patches via _apt_#footnote("https://packages.debian.org/bookworm/apt").
 
-== Baseline hardening
+=== Baseline hardening
 
 There are many resources covering system hardening of a host and, it is quite a complex topic. We are going to apply some general guidelines provided by the _DevSec Hardening Framework_#footnote("https://dev-sec.io/") which applies various security recommendations. In this chapter only the recommendations in the OS layer is applied.
 
@@ -118,14 +136,14 @@ As @devsec-overview displays: logging and monitoring isn't covered by the framew
 
 // TODO: reference audit results in next chapter: https://typst.app/docs/reference/model/ref/
 
-== SSH hardening
+=== SSH hardening
 
 SSH is the preferred way of remotely administering Linux servers. The default configuration grants anyone with valid credentials direct access to the systems command line and makes this a primary target for attacks. In this chapter we are applying several guidelines to secure this important gateway. We are using another _Ansible_ role provided by the _DevSec Hardening Framework_ - the following represents a small subset of rules applied:
 - Only allowing Protocol 2 connections for security enhancements#footnote("https://www.emtec.com/ssh/ssh-v2.html").
 - Disable all SSH authentication methods except key-based authentication.
 - Limit the number of concurrent sessions to minimize the impact of a _Denial of Service_ (DoS) attack against a running SSH daemon.
 
-== Security updates management
+=== Security updates management
 
 The target host should be updated regularly with the latest security patches. It is a good idea to automate this process to minimize the exposure window following the _Securing Debian Manual_#footnote("https://www.debian.org/doc/manuals/securing-debian-manual/security-update.en.html") suggestion - this is achieved by using _unattended-upgrades_ package and configure it to only apply security related updates. To achieve this the role `hifis.toolkit.unattended_upgrades`#footnote("https://galaxy.ansible.com/ui/repo/published/hifis/toolkit/content/role/unattended_upgrades/") will be used. Which already brings the wanted configuration by only allowing security related patches. The following is a small excerpt of the configuration:
 - _unattended_syslog_enable_ = _true_ | Write events to _syslog_ to be in a central location.
