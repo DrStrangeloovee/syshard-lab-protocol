@@ -59,13 +59,15 @@ This is a good moment to take a snapshot as this marks the point of Ansible taki
 + *Security updates management*
   - *Objective:* Ensure the system remains up-to-date with the latest security patches.
   - *Question:* Can we fully automate security updates and verify that critical patches are applied?
-+ *Baseline hardening* (according to the _DevSec Hardening Framework_#footnote("https://dev-sec.io/"))
++ *Baseline hardening* (according to the _DevSec Hardening Framework Linux baseline_#footnote("https://dev-sec.io/baselines/linux/"))
   - *Objective:* Apply well known security recommendations for a Debian 12 host. This includes reducing the attack surface & applying secure configurations.
   - *Question:* Which results will a security audit still find which would require immediate attention?
 + *Security updates management*
   - *Objective:* Ensure the system remains up-to-date with the latest security patches.
   - *Question:* Can we fully automate security updates and verify that critical patches are applied?
-
++ *SSH hardening* (according to the _DevSec Hardening Framework SSH baseline_#footnote("https://dev-sec.io/baselines/ssh/"))
+  - *Objective:* Harden the SSH service to enforce secure authentication (public key) and disable unsecure options.
+  - *Question:* Is the SSH daemon configured to allow only Protocol 2, disable root logins and password authentication, enforce strong key‐exchange algorithms and ciphers?
 // TODO: refine objectives
 + *Minimal attack surface*
   - *Objective:* Remove unneeded software and services.
@@ -128,7 +130,9 @@ There are many resources covering system hardening of a host and, it is quite a 
 ) <devsec-overview>
 
 There are several security improvements#footnote("https://dev-sec.io/baselines/linux/") implemented including:
-- Disabling the access
+- Stricter permissions of the _su_ binary.
+- Periodic permission and ownership checks of the `/etc/shadow` and `/etc/passwd` files.
+- Installation of the _syslog_#footnote("https://packages.debian.org/bookworm/syslog") /* TODO: check link */ and _audit_#footnote("https://packages.debian.org/bookworm/auditd") /* TODO: check link */ package. // TODO: reference in later audit/analysis chapter
 
 As @devsec-overview displays: logging and monitoring isn't covered by the framework, but this has already been partly covered as shown in @preparation.
 
@@ -136,3 +140,9 @@ As @devsec-overview displays: logging and monitoring isn't covered by the framew
 
 // TODO: reference audit results in next chapter: https://typst.app/docs/reference/model/ref/
 
+== SSH hardening
+
+SSH is the preferred way of remotely administering Linux servers. The default configuration grants anyone with valid credentials direct access to the systems command line and makes this a primary target for attacks. In this chapter we are applying several guidelines to secure this important gateway. We are using another _Ansible_ role provided by the _DevSec Hardening Framework_ - the following represents a small subset of rules applied:
+- Only allowing Protocol 2 connections for security enhancements#footnote("https://jadaptive.com/java-ssh-library/exploring-ssh-protocol-versions-differences-and-enhancements/").
+- Disable all SSH authentication methods except key-based authentication.
+- Limit the number of concurrent sessions to minimize the impact of a _Denial of Service_ (DoS) attack against a running SSH daemon.
