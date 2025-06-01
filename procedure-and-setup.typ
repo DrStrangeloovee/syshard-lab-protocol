@@ -117,7 +117,7 @@ Conveniently, _Lynis_ displays a _Hardening Index_, providing insight into how w
   ],
 )
 
-The three medium rated attack vectors are:
+The three medium rated vulnerabilities are:
 + _The remote host is missing one or more known mitigation(s) on
   Linux Kernel side for the referenced 'MDS - Microarchitectural Data Sampling' hardware
   vulnerabilities._#footnote("https://pentest-tools.com/vulnerabilities-exploits/missing-linux-kernel-mitigations-for-mds-microarchitectural-data-sampling-hardware-vulnerabilities_9986")
