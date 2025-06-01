@@ -21,9 +21,9 @@
       ansible.builtin.apt:
         upgrade: dist
 
-    - name: Install sudo
+    - name: Install required packages
       ansible.builtin.apt:
-        name: "sudo"
+        name: "{{ preparation_needed_packages }}"
         state: present
 
     - name: Add the user 'syshard' and assign 'sudo' group
