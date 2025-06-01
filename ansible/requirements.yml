@@ -3,3 +3,4 @@ collections:
   - name: devsec.hardening
   - name: hifis.toolkit
   - name: community.general
+  - name: containers.podman
