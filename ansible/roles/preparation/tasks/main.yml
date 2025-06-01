@@ -2,18 +2,24 @@
 ---
 # tasks file for preparation
 - block:
-    - name: Update all packages to their latest version
+    - name: Install the NTP package
       ansible.builtin.apt:
-        name: "*"
-        state: latest
+        name: "ntp"
+        state: present
 
-    - name: Upgrade the OS (apt-get dist-upgrade)
-      ansible.builtin.apt:
-        upgrade: dist
+    - name: Enable and start NTP
+      ansible.builtin.service:
+        name: "ntpd"
+        state: started
+        enabled: true
 
     - name: Run the equivalent of 'apt-get update' as a separate step
       ansible.builtin.apt:
         update_cache: true
+
+    - name: Upgrade the OS (apt-get dist-upgrade)
+      ansible.builtin.apt:
+        upgrade: dist
 
     - name: Install sudo
       ansible.builtin.apt:
