@@ -1,0 +1,108 @@
+Initializing 2025-06-01T21:21:49+02:00
+
+
+[1;33mSection A - Check results[0m
+
+[1;34m[INFO][0m 1 - Host Configuration
+[1;34m[INFO][0m 1.1 - Linux Hosts Specific Configuration
+[1;31m[WARN][0m 1.1.1 - Ensure a separate partition for containers has been created (Automated)
+[1;31m[WARN][0m 1.1.3 - Ensure auditing is configured for the Podman executable(Automated)
+[1;31m[WARN][0m 1.1.4 - Ensure auditing is configured for Podman files and directories -/run/podman (Automated)
+[1;31m[WARN][0m 1.1.5 - Ensure auditing is configured for Podman files and directories - /var/lib/containers (Automated)
+[1;31m[WARN][0m 1.1.6 - Ensure auditing is configured for Podman files and directories - /etc/containers (Automated)
+[1;31m[WARN][0m 1.1.7 - Ensure auditing is configured for Podman files and directories - podman.service (Automated)
+[1;31m[WARN][0m 1.1.9 - Ensure auditing is configured for Podman files and directories - podman.socket (Automated)
+[1;31m[WARN][0m 1.1.10 - Ensure auditing is configured for Podman files and directories - /usr/share/containers/containers.conf (Automated)
+[1;34m[INFO][0m 1.1.11 - Ensure auditing is configured for Podman files and directories - /etc/containers/containers.conf (Automated)
+[1;34m[INFO][0m        * File not found
+[1;34m[INFO][0m 1.1.12 - Ensure auditing is configured for Podman files and directories - /etc/containers/storage.conf (Automated)
+[1;34m[INFO][0m        * File not found
+[1;31m[WARN][0m 1.1.14 - Ensure auditing is configured for Podman files and directories - /usr/bin/podman (Automated)
+[1;31m[WARN][0m 1.1.17 - Ensure auditing is configured for Podman files and directories - /usr/bin/crun (Automated)
+[1;34m[INFO][0m 1.1.18 - Ensure auditing is configured for Podman files and directories - /usr/bin/runc (Automated)
+[1;34m[INFO][0m        * File not found
+[1;34m[INFO][0m 1.2 - General Configuration
+[1;33m[NOTE][0m 1.2.1 - Ensure the container host has been Hardened (Manual)
+[1;32m[PASS][0m 1.2.2 - Ensure that the version of Podman is up to date (Manual)
+[1;34m[INFO][0m        * Using 4.3.1, verify is it up to date as deemed necessary
+
+[1;34m[INFO][0m 2 - Podman service configuration
+[1;33m[NOTE][0m 2.1 - Run the Podman service as a non-root user, if possible (Manual)
+[1;32m[PASS][0m 2.3 - Ensure the logging level is set to 'info' (Scored)
+[1;32m[PASS][0m 2.4 - Ensure Podman is allowed to make changes to iptables (Scored)
+[1;32m[PASS][0m 2.5 - Ensure insecure registries are not used (Scored)
+[1;32m[PASS][0m 2.6 - Ensure aufs storage driver is not used (Scored)
+[1;34m[INFO][0m 2.7 - Ensure TLS authentication for Podman service is configured (Scored)
+[1;34m[INFO][0m      * Podman service not listening on TCP
+[1;34m[INFO][0m 2.8 - Ensure the default ulimit is configured appropriately (Manual)
+[1;34m[INFO][0m      * Default ulimit doesn't appear to be set
+[1;32m[PASS][0m 2.10 - Ensure the default cgroup usage has been confirmed (Scored)
+[1;32m[PASS][0m 2.11 - Ensure base device size is not changed until needed (Scored)
+[1;32m[PASS][0m 2.13 - Ensure centralized and remote logging is configured (Scored)
+[1;31m[WARN][0m 2.14 - Ensure containers are restricted from acquiring new privileges (Scored)
+[1;31m[WARN][0m 2.16 - Ensure that a service-wide SELinux is enabled (Scored)
+[1;32m[PASS][0m 2.17 - Ensure that a service-wide custom seccomp profile is applied if appropriate (Manual)
+
+[1;34m[INFO][0m 3 - Podman daemon configuration files
+[1;32m[PASS][0m 3.1 - Ensure that the podman.service file ownership is set to root:root (Automated)
+[1;32m[PASS][0m 3.2 - Ensure that podman.service file permissions are appropriately set (Automated)
+[1;32m[PASS][0m 3.3 - Ensure that podman.socket file ownership is set to root:root (Automated)
+[1;32m[PASS][0m 3.4 - Ensure that podman.socket file permissions are set to 644 or more restrictive (Automated)
+[1;34m[INFO][0m 3.5 - Ensure that the /etc/podman directory ownership is set to root:root (Automated)
+[1;34m[INFO][0m      * Directory not found
+[1;34m[INFO][0m 3.6 - Ensure that /etc/podman directory permissions are set to 755 or more restrictively (Automated)
+[1;34m[INFO][0m      * Directory not found
+[1;34m[INFO][0m 3.7 - Ensure that registry certificate file ownership is set to root:root (Automated)
+[1;34m[INFO][0m      * Directory not found
+[1;34m[INFO][0m 3.8 - Ensure that registry certificate file permissions are set to 444 or more restrictively (Automated)
+[1;34m[INFO][0m      * Directory not found
+[1;34m[INFO][0m 3.9 - Ensure that TLS CA certificate file ownership is set to root:root (Automated)
+[1;34m[INFO][0m      * No TLS CA certificate found
+[1;34m[INFO][0m 3.10 - Ensure that TLS CA certificate file permissions are set to 444 or more restrictively (Automated)
+[1;34m[INFO][0m       * No TLS CA certificate found
+[1;34m[INFO][0m 3.11 - Ensure that Podman server certificate file ownership is set to root:root (Automated)
+[1;34m[INFO][0m       * No TLS Server certificate found
+[1;34m[INFO][0m 3.12 - Ensure that the Podman server certificate file permissions are set to 444 or more restrictively (Automated)
+[1;34m[INFO][0m       * No TLS Server certificate found
+[1;34m[INFO][0m 3.13 - Ensure that the Podman server certificate key file ownership is set to root:root (Automated)
+[1;34m[INFO][0m       * No TLS Key found
+[1;34m[INFO][0m 3.14 - Ensure that the Podman server certificate key file permissions are set to 400 (Automated)
+[1;34m[INFO][0m       * No TLS Key found
+[1;34m[INFO][0m 3.15 - Ensure that the Podman socket file ownership is set to root:podman (Automated)
+[1;34m[INFO][0m       * File not found
+[1;34m[INFO][0m 3.16 - Ensure that the Podman socket file permissions are set to 660 or more restrictively (Automated)
+[1;34m[INFO][0m       * File not found
+[1;34m[INFO][0m 3.17 - Ensure that the daemon.json file ownership is set to root:root (Automated)
+[1;34m[INFO][0m       * File not found
+[1;34m[INFO][0m 3.18 - Ensure that daemon.json file permissions are set to 644 or more restrictive (Automated)
+[1;34m[INFO][0m       * File not found
+
+[1;34m[INFO][0m 4 - Container Images and Build File
+[1;34m[INFO][0m 4.1 - Ensure that a user for the container has been created (Automated)
+[1;34m[INFO][0m      * No containers running
+[1;33m[NOTE][0m 4.2 - Ensure that containers use only trusted base images (Manual)
+[1;32m[PASS][0m 4.3 - Ensure that unnecessary packages are not installed in the container (Automatic)
+[1;33m[NOTE][0m 4.4 - Ensure images are scanned and rebuilt to include security patches (Manual)
+[1;32m[PASS][0m 4.6 - Ensure that HEALTHCHECK instructions have been added to container images (Automated)
+[1;32m[PASS][0m 4.7 - Ensure update instructions are not used alone in the Containerfile (Manual)
+[1;32m[PASS][0m 4.8 - Ensure setuid and setgid permissions are removed (Automatic)
+[1;32m[PASS][0m 4.9 - Ensure that COPY is used instead of ADD in Containerfiles (Manual)
+[1;33m[NOTE][0m 4.10 - Ensure secrets are not stored in Containerfiles (Manual)
+[1;33m[NOTE][0m 4.11 - Ensure only verified packages are are installed (Manual)
+
+[1;34m[INFO][0m 5 - Container Runtime
+[1;34m[INFO][0m   * No containers running, skipping Section 5
+[1;32m[PASS][0m 5.27 - Ensure that Podman commands always make use of the latest version of their image (Automatic)
+
+[1;34m[INFO][0m 6 - Podman Security Operations
+[1;34m[INFO][0m 6.1 - Ensure that image sprawl is avoided (Manual)
+[1;34m[INFO][0m      * There are currently: 0 images
+[1;34m[INFO][0m 6.2 - Ensure that container sprawl is avoided (Manual)
+[1;34m[INFO][0m      * There are currently a total of  containers, with 0 of them currently running
+
+
+[1;33mSection C - Score[0m
+
+[1;34m[INFO][0m Checks: 59
+[1;34m[INFO][0m Score: 1
+
