@@ -34,6 +34,9 @@
 // Chapter: Analysis Part
 #include "analysis-part.typ"
 
+// Chapter: Conclusions
+#include "conclusions.typ"
+
 // Chapter: References
 #include "references.typ"
 
