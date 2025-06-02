@@ -61,7 +61,7 @@ To simplify the process we are choosing the _Create LVM and encrypt_ option whic
 
 We don't install any additional software besides the default system tools and the SSH server and finally finish the installation by setting the location of the GRUB bootloader and rebooting into the newly installed system.
 #parbreak()
-The only account present by default is the superuser _root_. In addition, we've created a non-privileged user named _syshard_ for day-to-day operations and this account does not belong to the sudoers group and therefore cannot perform any administrative tasks without first elevating to root.
+The only account present by default is the superuser _root_. In addition, we've created a non-privileged user named _syshard_ for day-to-day operations and this account does not belong to the _sudoers_ group and therefore cannot perform any administrative tasks without first elevating to root.
 To enable _Ansible_ to connect via SSH to the target system we are creating a key pair and transfer the public key to it. While this process could be automated with Ansible too it would require another dependency (_sshpass_#footnote(link("https://anto.online/ssh-connection-type-with-passwords-you-must-install-the-sshpass-program/")) on the remote system to be able to pass the needed SSH password to login and, it was therefore decided to just manually copy the key once and afterward be able to have _Ansible_ connect via SSH keys.
 #parbreak()
 This is a good moment to take a snapshot as this marks the point of Ansible taking over and automating the rest of the system installation.
@@ -84,7 +84,6 @@ This is a good moment to take a snapshot as this marks the point of Ansible taki
 + *Podman deployment*
   - *Objective:* Ensure that deployed containers do not run with _root_ privileges.
   - *Question:* What additional attack surface is introduced by using _Podman_?
-// TODO: refine objectives
 /*+ *Minimal attack surface*
   - *Objective:* Remove unneeded software and services.
   - *Questions:* Which default packages and daemons are unnecessary, and how do we remove them?
@@ -170,13 +169,9 @@ There are many resources covering system hardening of a host and, it is quite a 
 There are several security improvements#footnote(link("https://dev-sec.io/baselines/linux/")) implemented including:
 - Stricter permissions of the _su_ binary.
 - Periodic permission and ownership checks of the `/etc/shadow` and `/etc/passwd` files.
-- Installation of the _syslog_#footnote(link("https://packages.debian.org/bookworm/syslog")) /* TODO: check link */ and _audit_#footnote(link("https://packages.debian.org/bookworm/auditd")) /* TODO: check link */ package. // TODO: reference in later audit/analysis chapter
+- Installation of the _syslog_#footnote(link("https://packages.debian.org/bookworm/syslog-ng")) and _audit_#footnote(link("https://packages.debian.org/bookworm/auditd")) package.
 
 As @devsec-overview displays: logging and monitoring isn't covered by the framework, but this has already been partly covered as shown in @preparation.
-
-// TODO: extend the contents of this chapter
-
-// TODO: reference audit results in next analysis chapter: https://typst.app/docs/reference/model/ref/
 
 === SSH hardening
 
@@ -188,7 +183,6 @@ SSH is the preferred way of remotely administering Linux servers. The default co
 === Security updates management
 
 The target host should be updated regularly with the latest security patches. It is a good idea to automate this process to minimize the exposure window following the _Securing Debian Manual_#footnote(link("https://www.debian.org/doc/manuals/securing-debian-manual/security-update.en.html")) suggestion - this is achieved by using _unattended-upgrades_ package and configure it to only apply security related updates. To achieve this the role `hifis.toolkit.unattended_upgrades`#footnote(link("https://galaxy.ansible.com/ui/repo/published/hifis/toolkit/content/role/unattended_upgrades/")) will be used. Which already brings the wanted configuration by only allowing security related patches. The following is a small excerpt of the configuration:
-// TODO: improve formatting
 - _unattended_syslog_enable_ = _true_ | Write events to _syslog_ to be in a central location.
 - _unattended_apt_daily_upgrade_oncalendar_ = _\*-\*-\* 6:00_ | Time schedule to run update process.
 - _unattended_automatic_reboot_ = _false_ | If automatic upgrades need a reboot of the host this isn't done automatically.
