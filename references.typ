@@ -54,8 +54,6 @@ program/")
 - *Debian Security Announcements*
   - #link("https://lists.debian.org/debian-security-announce/2025/msg00095.html")
 
-
-
 == Ansible roles
 
 - *Community General*
@@ -68,4 +66,7 @@ program/")
   - #link("https://galaxy.ansible.com/ui/repo/published/hifis/toolkit/")
 
 - *Podman*
-  - #link("https://github.com/chasinglogic/ansible-role-podman")
+  - #link("https://galaxy.ansible.com/ui/repo/published/containers/podman/")
+
+- *UFW*
+  - #link("https://galaxy.ansible.com/ui/repo/published/community/general/content/module/ufw")
