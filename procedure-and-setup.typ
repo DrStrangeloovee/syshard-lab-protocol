@@ -173,6 +173,22 @@ There are several security improvements#footnote(link("https://dev-sec.io/baseli
 
 As @devsec-overview displays: logging and monitoring isn't covered by the framework, but this has already been partly covered as shown in @preparation.
 
+#pagebreak()
+
+Additionally the _Uncomplicated Firewall_#footnote("https://wiki.debian.org/Uncomplicated%20Firewall%20%28ufw%29") (_ufw_) was installed and configured.
+The implemented steps are:
+- Ensure _ufw_ is enabled and running.
+- Simultaneous _SSH_ connections are limited.
+- _SSH_ connections will be limited to trusted hosts. In this case only to hosts in the _LAN_ and the _VPN_ network to enable secure access from outside.
+- For containers the port range 60000-61000 is allowed.
+
+#figure(
+  image("assets/ufw-status.png"),
+  caption: [
+    Overview of enabled _ufw_ rules.
+  ],
+)
+
 === SSH hardening
 
 SSH is the preferred way of remotely administering Linux servers. The default configuration grants anyone with valid credentials direct access to the systems command line and makes this a primary target for attacks. In this chapter we are applying several guidelines to secure this important gateway. We are using another _Ansible_ role provided by the _DevSec Hardening Framework_ - the following represents a small subset of rules applied:
