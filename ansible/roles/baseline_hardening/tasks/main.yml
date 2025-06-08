@@ -43,6 +43,12 @@
     direction: outgoing
   become: true
 
+- name: Allow port range 60000-61000 for containers
+  community.general.ufw:
+    rule: allow
+    port: 60000:61000
+    proto: tcp
+
 - block:
     - name: Run devsec os hardening
       ansible.builtin.include_role:
