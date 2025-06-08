@@ -8,4 +8,4 @@
     image: docker.io/crccheck/hello-world
     state: started
     ports:
-      - "8080:8000"
+      - "60001:8000"
