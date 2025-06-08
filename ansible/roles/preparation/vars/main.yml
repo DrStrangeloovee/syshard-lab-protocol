@@ -5,3 +5,4 @@ preparation_needed_packages:
   - sudo
   - podman
   - containers-storage
+  - ufw
